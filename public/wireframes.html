@@ -1,0 +1,468 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Kedia Claims Wireframes</title>
+<style>
+  :root {
+    --ink: #1f2937; --mute: #6b7280; --line: #9ca3af; --fill: #e5e7eb; --fill2: #f3f4f6; --paper: #fff; --bg: #f9fafb;
+    --note: #2563eb; --note-bg: #eff6ff;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font: 14px/1.45 ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif; }
+  header.top { padding: 28px 16px 8px; max-width: 1180px; margin: 0 auto; }
+  header.top h1 { margin: 0; font-size: 24px; }
+  header.top p { margin: 6px 0 0; color: var(--mute); max-width: 760px; }
+  nav.toc { position: sticky; top: 0; z-index: 5; background: rgba(249,250,251,.95); border-bottom: 1px solid var(--fill); backdrop-filter: blur(4px); }
+  nav.toc div { max-width: 1180px; margin: 0 auto; padding: 10px 16px; display: flex; gap: 6px; overflow-x: auto; }
+  nav.toc a { white-space: nowrap; text-decoration: none; color: var(--ink); border: 1px solid var(--fill); background: var(--paper); border-radius: 999px; padding: 4px 12px; font-size: 13px; }
+  nav.toc a.day { background: var(--ink); color: #fff; border-color: var(--ink); }
+  main { max-width: 1180px; margin: 0 auto; padding: 8px 16px 60px; }
+  section.screen { margin-top: 36px; scroll-margin-top: 60px; }
+  .day-tag { display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--mute); }
+  section.screen h2 { margin: 2px 0 4px; font-size: 19px; }
+  section.screen > p.goal { margin: 0 0 14px; color: var(--mute); max-width: 820px; }
+  .wrap { display: grid; grid-template-columns: minmax(0, 1fr) 280px; gap: 18px; align-items: start; }
+  @media (max-width: 900px) { .wrap { grid-template-columns: 1fr; } }
+
+  /* Browser frame */
+  .frame { border: 2px solid var(--ink); border-radius: 10px; background: var(--paper); overflow: hidden; }
+  .chrome { height: 26px; border-bottom: 2px solid var(--ink); display: flex; align-items: center; gap: 5px; padding: 0 10px; background: var(--fill2); }
+  .chrome i { width: 9px; height: 9px; border-radius: 50%; border: 1.5px solid var(--ink); }
+  .chrome span { margin-left: 10px; font-size: 11px; color: var(--mute); font-family: ui-monospace, monospace; }
+  .app { display: grid; grid-template-columns: 150px minmax(0,1fr); min-height: 420px; }
+  @media (max-width: 640px) { .app { grid-template-columns: 1fr; } .side { display: none; } }
+  .side { border-right: 2px solid var(--ink); padding: 12px 10px; background: var(--fill2); }
+  .side .logo { font-weight: 700; font-size: 12px; margin-bottom: 14px; }
+  .side .nav { font-size: 12px; padding: 5px 7px; border-radius: 5px; margin-bottom: 3px; color: var(--mute); }
+  .side .nav.on { background: var(--ink); color: #fff; }
+  .body { padding: 12px 14px; min-width: 0; }
+  .topbar { display: flex; gap: 8px; align-items: center; border-bottom: 1.5px dashed var(--line); padding-bottom: 10px; margin-bottom: 12px; }
+
+  /* Primitives */
+  .box { border: 1.5px solid var(--line); border-radius: 6px; padding: 8px; background: var(--paper); position: relative; min-width: 0; }
+  .box.fill { background: var(--fill2); }
+  .ttl { font-weight: 600; font-size: 12px; margin-bottom: 6px; }
+  .h1 { font-weight: 700; font-size: 16px; }
+  .sub { font-size: 11px; color: var(--mute); }
+  .ln { height: 7px; border-radius: 4px; background: var(--fill); margin: 5px 0; }
+  .ln.s { width: 40%; } .ln.m { width: 65%; } .ln.l { width: 90%; }
+  .big { font-size: 18px; font-weight: 700; }
+  .btn { display: inline-flex; align-items: center; gap: 4px; border: 1.5px solid var(--ink); border-radius: 5px; padding: 3px 9px; font-size: 11px; font-weight: 600; white-space: nowrap; background: var(--paper); }
+  .btn.pri { background: var(--ink); color: #fff; }
+  .inp { border: 1.5px solid var(--line); border-radius: 5px; padding: 4px 8px; font-size: 11px; color: var(--mute); background: var(--paper); min-width: 0; }
+  .lbl { font-size: 11px; font-weight: 600; margin: 6px 0 3px; }
+  .pill { display: inline-block; border: 1.2px solid var(--line); border-radius: 999px; padding: 0 7px; font-size: 10px; color: var(--mute); white-space: nowrap; }
+  .pill.dark { border-color: var(--ink); color: var(--ink); font-weight: 600; }
+  .row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+  .grow { flex: 1; }
+  .g { display: grid; gap: 8px; }
+  .g2 { grid-template-columns: repeat(2, minmax(0,1fr)); }
+  .g3 { grid-template-columns: repeat(3, minmax(0,1fr)); }
+  .g4 { grid-template-columns: repeat(4, minmax(0,1fr)); }
+  .g5 { grid-template-columns: repeat(5, minmax(0,1fr)); }
+  .span2 { grid-column: span 2; }
+  @media (max-width: 640px) { .g3, .g4, .g5 { grid-template-columns: repeat(2, minmax(0,1fr)); } }
+  .chart { height: 110px; border: 1.5px dashed var(--line); border-radius: 6px; display: flex; align-items: flex-end; gap: 6px; padding: 8px; }
+  .chart b { flex: 1; background: var(--fill); border: 1.2px solid var(--line); border-bottom: 0; }
+  .hbars b { display: block; height: 12px; background: var(--fill); border: 1.2px solid var(--line); margin: 7px 0; }
+  table.t { width: 100%; border-collapse: collapse; font-size: 11px; }
+  table.t th { text-align: left; border-bottom: 1.5px solid var(--ink); padding: 4px 5px; white-space: nowrap; }
+  table.t td { border-bottom: 1px solid var(--fill); padding: 5px; white-space: nowrap; }
+  table.t td.r, table.t th.r { text-align: right; }
+  .scroll { overflow-x: auto; }
+  .stepper { display: flex; align-items: center; gap: 4px; font-size: 10px; }
+  .stepper .dot { width: 18px; height: 18px; border-radius: 50%; border: 1.5px solid var(--ink); display: inline-flex; align-items: center; justify-content: center; font-weight: 700; flex-shrink: 0; }
+  .stepper .dot.on { background: var(--ink); color: #fff; }
+  .stepper .bar { flex: 1; height: 2px; background: var(--line); min-width: 10px; }
+  .check { display: flex; gap: 6px; align-items: flex-start; font-size: 11px; margin: 4px 0; }
+  .check i { width: 12px; height: 12px; border: 1.5px solid var(--ink); border-radius: 3px; flex-shrink: 0; margin-top: 1px; }
+  .check i.x { background: var(--ink); }
+  .drop { border: 1.5px dashed var(--ink); border-radius: 6px; padding: 14px; text-align: center; font-size: 11px; color: var(--mute); }
+  .mail { font-family: ui-monospace, monospace; font-size: 10.5px; line-height: 1.5; white-space: pre-wrap; color: var(--ink); }
+
+  /* Annotations */
+  .n { position: absolute; top: -9px; right: -9px; width: 20px; height: 20px; border-radius: 50%; background: var(--note); color: #fff; font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 0 2px var(--paper); z-index: 2; }
+  .rel { position: relative; }
+  aside.notes { background: var(--note-bg); border: 1px solid #bfdbfe; border-radius: 10px; padding: 12px 14px; }
+  aside.notes h3 { margin: 0 0 8px; font-size: 13px; color: var(--note); }
+  aside.notes ol { margin: 0; padding-left: 0; list-style: none; counter-reset: n; }
+  aside.notes li { counter-increment: n; position: relative; padding-left: 26px; margin-bottom: 8px; font-size: 12.5px; }
+  aside.notes li::before { content: counter(n); position: absolute; left: 0; top: 0; width: 18px; height: 18px; border-radius: 50%; background: var(--note); color: #fff; font-size: 10.5px; font-weight: 700; display: flex; align-items: center; justify-content: center; }
+  aside.notes .flow { margin-top: 10px; padding-top: 10px; border-top: 1px solid #bfdbfe; font-size: 12px; }
+  .legend { margin-top: 24px; display: flex; flex-wrap: wrap; gap: 16px; font-size: 12px; color: var(--mute); }
+  .map { margin-top: 18px; background: var(--paper); border: 1px solid var(--fill); border-radius: 10px; padding: 14px; font-size: 12.5px; }
+  .map code { background: var(--fill2); padding: 1px 5px; border-radius: 4px; }
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="day-tag">Kedia Pharmacy · Claims Management System</div>
+  <h1>Low-fidelity wireframes</h1>
+  <p>Layout and flow for all seven modules. The design keeps one sidebar and puts one clear “next action” on each screen, so non-technical staff always know what to do next. Blue numbers link each screen to its notes. All data shown is placeholder.</p>
+</header>
+<nav class="toc"><div>
+  <a class="day" href="#day1">Day 1</a>
+  <a href="#dashboard">1 · Dashboard</a>
+  <a href="#claims">2 · Claims table</a>
+  <a href="#new">3 · New claim</a>
+  <a class="day" href="#day2">Day 2</a>
+  <a href="#sop">4 · Supplier SOP</a>
+  <a href="#recon">5 · Reconciliation</a>
+  <a href="#email">6 · Email draft</a>
+  <a href="#detail">7 · Claim detail</a>
+  <a href="#flows">Flow map</a>
+</div></nav>
+
+<main>
+<h2 id="day1" style="margin-top:28px;font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--mute)">Day 1</h2>
+
+<!-- ================= 1. DASHBOARD ================= -->
+<section class="screen" id="dashboard">
+  <span class="day-tag">Module 1 · Day 1</span>
+  <h2>Dashboard</h2>
+  <p class="goal">Shows staff what is happening and what needs their attention today.</p>
+  <div class="wrap">
+    <div class="frame">
+      <div class="chrome"><i></i><i></i><i></i><span>/#/</span></div>
+      <div class="app">
+        <div class="side">
+          <div class="logo">✚ Kedia Claims</div>
+          <div class="nav on">Dashboard</div><div class="nav">Claims <span class="pill">6</span></div><div class="nav">New Claim</div><div class="nav">Supplier SOPs</div><div class="nav">Credit Notes</div><div class="nav">Email Drafts</div>
+        </div>
+        <div class="body">
+          <div class="topbar"><div class="inp grow">🔍 Search claim ID, invoice, product…</div><span class="sub">Priya S. · Accounts</span></div>
+          <div class="row" style="margin-bottom:10px"><div class="grow"><div class="h1">Good morning, Priya</div><div class="sub">6 claims to submit · 3 urgent</div></div><span class="btn pri">+ New claim</span></div>
+          <div class="g g5 rel"><span class="n">1</span>
+            <div class="box"><div class="sub">Total claims</div><div class="big">22</div><div class="ln m"></div></div>
+            <div class="box"><div class="sub">Pending submission</div><div class="big">6</div><div class="ln m"></div></div>
+            <div class="box"><div class="sub">Awaiting settlement</div><div class="big">9</div><div class="ln s"></div></div>
+            <div class="box"><div class="sub">Settled</div><div class="big">5</div><div class="ln m"></div></div>
+            <div class="box"><div class="sub">Outstanding ₹</div><div class="big">₹2.1L</div><div class="ln m"></div></div>
+          </div>
+          <div class="box rel" style="margin-top:10px"><span class="n">2</span>
+            <div class="ttl">Claim pipeline</div>
+            <div class="g g4">
+              <div class="box fill"><div class="sub">Not Claimed</div><div class="big">6</div></div>
+              <div class="box fill"><div class="sub">Claim Sent →</div><div class="big">4</div></div>
+              <div class="box fill"><div class="sub">Claim Received →</div><div class="big">5</div></div>
+              <div class="box fill"><div class="sub">Settled</div><div class="big">5</div></div>
+            </div>
+          </div>
+          <div class="g g2" style="margin-top:10px">
+            <div class="box rel"><span class="n">3</span><div class="ttl">Needs attention</div>
+              <div class="row"><span class="pill dark">●</span><div class="grow"><div class="ln m"></div></div><span class="sub">CLM-0013</span></div>
+              <div class="row"><span class="pill dark">●</span><div class="grow"><div class="ln l"></div></div><span class="sub">CLM-0006</span></div>
+              <div class="row"><span class="pill">●</span><div class="grow"><div class="ln m"></div></div><span class="sub">CLM-0012</span></div>
+              <div class="row"><span class="pill">●</span><div class="grow"><div class="ln s"></div></div><span class="sub">CLM-0021</span></div>
+            </div>
+            <div class="box rel"><span class="n">4</span><div class="ttl">Outstanding by supplier</div>
+              <div class="hbars"><b style="width:90%"></b><b style="width:65%"></b><b style="width:45%"></b><b style="width:25%"></b></div>
+            </div>
+          </div>
+          <div class="box rel" style="margin-top:10px"><span class="n">5</span><div class="ttl">Recent activity</div>
+            <div class="row"><span class="pill">PS</span><div class="grow"><div class="ln l"></div></div><span class="sub">2h ago</span></div>
+            <div class="row"><span class="pill">AK</span><div class="grow"><div class="ln m"></div></div><span class="sub">1 day</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <aside class="notes"><h3>Notes</h3><ol>
+      <li><b>KPI cards</b>: total claims, pending submission, awaiting settlement, settled and outstanding balance. Clicking a card opens the claims table with that filter.</li>
+      <li><b>Pipeline</b> shows the four stages, so staff can see the status flow. Click a stage to filter.</li>
+      <li><b>Needs attention</b> uses rules: claim window closing, required documents missing, supplier hasn't replied, credit note late. Red means urgent.</li>
+      <li><b>Outstanding by supplier</b> bar chart (Recharts) shows who owes the most.</li>
+      <li><b>Recent activity</b> lists the latest history entries across all claims and links to each claim.</li>
+    </ol></aside>
+  </div>
+</section>
+
+<!-- ================= 2. CLAIMS TABLE ================= -->
+<section class="screen" id="claims">
+  <span class="day-tag">Module 2 · Day 1</span>
+  <h2>Claims management table</h2>
+  <p class="goal">Find any claim quickly, see where it stands and open it.</p>
+  <div class="wrap">
+    <div class="frame">
+      <div class="chrome"><i></i><i></i><i></i><span>/#/claims?status=…&amp;q=…</span></div>
+      <div class="app">
+        <div class="side"><div class="logo">✚ Kedia Claims</div><div class="nav">Dashboard</div><div class="nav on">Claims</div><div class="nav">New Claim</div><div class="nav">Supplier SOPs</div><div class="nav">Credit Notes</div><div class="nav">Email Drafts</div></div>
+        <div class="body">
+          <div class="row" style="margin-bottom:10px"><div class="grow"><div class="h1">Claims</div><div class="sub">Click a row to open it</div></div><span class="btn">⇩ Export CSV</span><span class="btn pri">+ New claim</span></div>
+          <div class="row rel" style="margin-bottom:8px"><span class="n">1</span><span class="pill dark">All 22</span><span class="pill">Not Claimed 6</span><span class="pill">Sent / Received 9</span><span class="pill">Settled 5</span><span class="pill">Rejected 1</span></div>
+          <div class="row rel" style="margin-bottom:8px"><span class="n">2</span><div class="inp grow">🔍 Claim ID, invoice, product, batch, reference…</div><div class="inp">All suppliers ▾</div><div class="inp">All types ▾</div></div>
+          <div class="box rel scroll"><span class="n">3</span>
+            <table class="t">
+              <tr><th>Claim ID ↓</th><th>Supplier</th><th>Product / batch</th><th>Invoice</th><th class="r">Qty</th><th class="r">Amount</th><th class="r">Outstanding</th><th>Status</th><th></th></tr>
+              <tr><td><b>CLM-0022</b><br><span class="sub">Price Diff.</span></td><td>Himgiri</td><td>Ondaset 4 MD<br><span class="sub">OD25C30</span></td><td>HG/1412</td><td class="r">900</td><td class="r">₹2,520</td><td class="r">—</td><td><span class="pill">Not Claimed</span></td><td>✎</td></tr>
+              <tr><td><b>CLM-0011</b><br><span class="sub">Price Diff.</span></td><td>Zenith</td><td>Rabicure DSR<br><span class="sub">RB25C11</span></td><td>ZB-220419</td><td class="r">1,800</td><td class="r">₹15,120</td><td class="r">₹15,120</td><td><span class="pill dark">Claim Sent</span></td><td>✎</td></tr>
+              <tr><td><b>CLM-0009</b><br><span class="sub">Expiry</span></td><td>Himgiri</td><td>Cetrizol 10<br><span class="sub">CZ24H30</span></td><td>HG/1187</td><td class="r">1,250</td><td class="r">₹12,390</td><td class="r"><b>₹4,956</b></td><td><span class="pill dark">Received</span></td><td>✎</td></tr>
+              <tr><td><b>CLM-0001</b><br><span class="sub">Price Diff.</span></td><td>Medivance</td><td>Paravin 650<br><span class="sub">PV24J11</span></td><td>MDV/04512</td><td class="r">2,400</td><td class="r">₹6,720</td><td class="r">₹0</td><td><span class="pill">Settled</span></td><td>✎</td></tr>
+              <tr><td colspan="5"><b>22 claims</b></td><td class="r"><b>₹3.4L</b></td><td class="r"><b>₹2.1L</b></td><td colspan="2"></td></tr>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <aside class="notes"><h3>Notes</h3><ol>
+      <li><b>Status tabs</b> with counts. Uses the same words as the pipeline.</li>
+      <li><b>Search and filters</b> are saved in the URL, so a filtered view can be bookmarked or shared. The global search in the top bar opens this page.</li>
+      <li><b>Table</b>: ID, supplier, product and batch, invoice, quantity, amount, outstanding and a status badge. Columns can be sorted. Click a row for the detail page, or ✎ to edit. A totals row is at the bottom. On small screens the table scrolls sideways.</li>
+    </ol>
+    <div class="flow"><b>Demo flow 1:</b> a new claim appears at the top of this table as “Not Claimed”.</div></aside>
+  </div>
+</section>
+
+<!-- ================= 3. NEW CLAIM ================= -->
+<section class="screen" id="new">
+  <span class="day-tag">Module 3 · Day 1</span>
+  <h2>New claim entry</h2>
+  <p class="goal">Create a claim with the right details and documents, and see the claim value calculated while you type.</p>
+  <div class="wrap">
+    <div class="frame">
+      <div class="chrome"><i></i><i></i><i></i><span>/#/claims/new</span></div>
+      <div class="app">
+        <div class="side"><div class="logo">✚ Kedia Claims</div><div class="nav">Dashboard</div><div class="nav">Claims</div><div class="nav on">New Claim</div><div class="nav">Supplier SOPs</div><div class="nav">Credit Notes</div><div class="nav">Email Drafts</div></div>
+        <div class="body">
+          <div class="h1" style="margin-bottom:10px">New claim</div>
+          <div class="g" style="grid-template-columns:minmax(0,2fr) minmax(0,1fr)">
+            <div class="g">
+              <div class="box rel"><span class="n">1</span><div class="ttl">① Supplier &amp; claim type</div>
+                <div class="g g2"><div><div class="lbl">Supplier *</div><div class="inp">Select supplier ▾</div></div><div><div class="lbl">GST</div><div class="inp">12% ▾</div></div></div>
+                <div class="g g2" style="margin-top:6px"><div class="box fill"><b>◉ Price Difference</b><div class="sub">Billed above agreed rate</div></div><div class="box"><b>○ Expiry</b><div class="sub">Stock expired</div></div><div class="box"><b>○ Damaged</b></div><div class="box"><b>○ Short Supply</b></div></div>
+              </div>
+              <div class="box rel"><span class="n">2</span><div class="ttl">② Invoice details</div>
+                <div class="g g2"><div><div class="lbl">Invoice no. *</div><div class="inp">MDV/26/…</div></div><div><div class="lbl">Invoice date *</div><div class="inp">dd/mm/yyyy</div></div></div>
+                <div class="sub" style="margin-top:5px">⚠ 11 days left in Medivance's 60-day claim window</div>
+              </div>
+              <div class="box"><div class="ttl">③ Product details</div>
+                <div class="lbl">Product *</div><div class="inp">Search catalogue…</div>
+                <div class="g g3"><div><div class="lbl">Batch *</div><div class="inp">&nbsp;</div></div><div><div class="lbl">Qty *</div><div class="inp">&nbsp;</div></div><div><div class="lbl">Expiry</div><div class="inp">&nbsp;</div></div><div><div class="lbl">Invoice rate *</div><div class="inp">₹</div></div><div><div class="lbl">Agreed rate *</div><div class="inp">₹</div></div></div>
+              </div>
+              <div class="box rel"><span class="n">3</span><div class="ttl">④ Supporting documents</div>
+                <div class="g g2"><div><div class="drop">⇪ Drop files or browse</div><div class="row" style="margin-top:6px"><span class="pill">Invoice_MDV.pdf</span><span class="pill">✕</span></div></div>
+                <div class="box fill"><div class="sub"><b>Supplier requires · 1/3</b></div><div class="check"><i class="x"></i>Invoice copy</div><div class="check"><i></i>Debit note</div><div class="check"><i></i>Scheme letter</div></div></div>
+              </div>
+              <div class="box"><div class="ttl">⑤ Notes</div><div class="ln l"></div></div>
+            </div>
+            <div class="g" style="align-content:start">
+              <div class="box rel"><span class="n">4</span><div class="ttl">Claim calculation</div>
+                <div class="row"><span class="sub grow">Rate diff / unit</span><span>₹4.50</span></div>
+                <div class="row"><span class="sub grow">× 2,000 units</span><span>₹9,000</span></div>
+                <div class="row"><span class="sub grow">GST 12%</span><span>₹1,080</span></div>
+                <div class="row" style="border-top:1.5px solid var(--ink);margin-top:6px;padding-top:6px"><b class="grow">Total</b><span class="big">₹10,080</span></div>
+              </div>
+              <div class="box fill"><div class="ttl">Medivance SOP</div><span class="pill">Email</span> <span class="pill">60-day window</span><div class="sub" style="margin-top:4px">Open procedure ↗</div></div>
+              <span class="btn pri" style="justify-content:center">Save claim</span>
+              <span class="btn" style="justify-content:center">Save &amp; add another</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <aside class="notes"><h3>Notes</h3><ol>
+      <li><b>Type cards</b> each have a one-line explanation. Types the selected supplier doesn't accept (from its SOP) are greyed out.</li>
+      <li><b>Claim window warning</b>: the invoice date is checked against the supplier's window as soon as it's entered.</li>
+      <li><b>Uploads</b>: the document type is guessed from the file name. The checklist on the right shows which required documents are still missing.</li>
+      <li><b>Sticky calculation panel</b> updates live. Price difference = (invoice rate − agreed rate) × qty + GST. Expiry uses the supplier's reimbursement %.</li>
+    </ol>
+    <div class="flow"><b>After saving:</b> go to the claim detail page. A toast confirms “CLM-2026-0023 created”. Errors are shown next to each field in plain language.</div></aside>
+  </div>
+</section>
+
+<h2 id="day2" style="margin-top:48px;font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--mute)">Day 2</h2>
+
+<!-- ================= 4. SUPPLIER SOP ================= -->
+<section class="screen" id="sop">
+  <span class="day-tag">Module 4 · Day 2</span>
+  <h2>Supplier SOP directory</h2>
+  <p class="goal">Replaces the knowledge in people's heads. Shows exactly how each supplier wants claims submitted, as a checklist staff can tick off.</p>
+  <div class="wrap">
+    <div class="frame">
+      <div class="chrome"><i></i><i></i><i></i><span>/#/suppliers/sup-medivance?claim=CLM-0013</span></div>
+      <div class="app">
+        <div class="side"><div class="logo">✚ Kedia Claims</div><div class="nav">Dashboard</div><div class="nav">Claims</div><div class="nav">New Claim</div><div class="nav on">Supplier SOPs</div><div class="nav">Credit Notes</div><div class="nav">Email Drafts</div></div>
+        <div class="body">
+          <div class="row" style="margin-bottom:8px"><span class="pill dark">MDV</span><div class="grow"><div class="h1">Medivance Pharma Distributors</div><div class="sub">Kolkata · Claim procedure</div></div><span class="btn pri">+ New claim for MDV</span></div>
+          <div class="g g4 rel" style="margin-bottom:8px"><span class="n">1</span><div class="box"><div class="sub">Submit via</div><b>Email</b></div><div class="box"><div class="sub">Window</div><b>60 days</b></div><div class="box"><div class="sub">Response</div><b>7 days</b></div><div class="box"><div class="sub">Expiry</div><b>100%</b></div></div>
+          <div class="g" style="grid-template-columns:minmax(0,2fr) minmax(0,1fr)">
+            <div class="g">
+              <div class="box rel"><span class="n">2</span><div class="ttl">Step-by-step procedure <span class="sub">· 2/6 done</span></div>
+                <div class="box fill" style="margin-bottom:6px"><div class="row"><span class="sub">Working on claim:</span><div class="inp grow">CLM-0013 · Montekast LC · ₹10,080 ▾</div></div><div class="ln l" style="background:var(--line);width:33%"></div></div>
+                <div class="check"><i class="x"></i><s>Check the claim window</s></div>
+                <div class="check"><i class="x"></i><s>Prepare a debit note</s></div>
+                <div class="check"><i></i><b>Collect supporting documents</b> <span class="sub">– invoice, debit note, scheme letter</span></div>
+                <div class="check"><i></i><b>Email the claims desk</b></div>
+                <div class="check"><i></i><b>Record the submission</b></div>
+                <div class="check"><i></i><b>Follow up after 7 days</b></div>
+                <div class="row rel" style="margin-top:6px"><span class="n">3</span><span class="grow"></span><span class="btn">✉ Generate email</span><span class="btn pri">Mark as sent</span></div>
+              </div>
+              <div class="box"><div class="ttl">Required documents <span class="inp" style="float:right">Price Difference ▾</span></div><div class="check"><i class="x"></i>Invoice copy</div><div class="check"><i></i>Debit note — signed</div><div class="check"><i class="x"></i>Scheme letter</div></div>
+            </div>
+            <div class="g" style="align-content:start">
+              <div class="box rel"><span class="n">4</span><div class="ttl">Where to send</div><div class="sub">claims@medivance… ⧉</div><div class="sub">CC accounts@… ⧉</div></div>
+              <div class="box"><div class="ttl">Contacts</div><b style="font-size:11px">Rohit B.</b><div class="sub">Claims exec · ✉ · ☎</div><b style="font-size:11px">Sneha G.</b><div class="sub">Escalation</div></div>
+              <div class="box fill"><div class="ttl">Good to know</div><div class="ln l"></div><div class="ln m"></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <aside class="notes"><h3>Notes</h3><ol>
+      <li><b>Key facts</b> at the top: submission method, claim window, usual response time and expiry reimbursement.</li>
+      <li><b>Guided checklist</b>: pick the claim you're working on, then tick steps as you go. The progress bar fills up. The directory index (not shown) is a grid of supplier cards with claim counts and amounts outstanding.</li>
+      <li><b>Shortcuts</b> to the email generator and the “Mark as sent” dialog, so the SOP leads straight into the next action.</li>
+      <li>Emails can be copied with one click, and the contacts include who to escalate to.</li>
+    </ol>
+    <div class="flow"><b>Demo flow 3:</b> open the claim → “Follow SOP” → tick the steps → Generate email → Mark as sent.</div></aside>
+  </div>
+</section>
+
+<!-- ================= 5. RECONCILIATION ================= -->
+<section class="screen" id="recon">
+  <span class="day-tag">Module 5 · Day 2</span>
+  <h2>Credit note reconciliation</h2>
+  <p class="goal">Record a supplier credit note, split it across one or more claims, and see what is fully settled, partly paid or still owed.</p>
+  <div class="wrap">
+    <div class="frame">
+      <div class="chrome"><i></i><i></i><i></i><span>/#/reconciliation</span></div>
+      <div class="app">
+        <div class="side"><div class="logo">✚ Kedia Claims</div><div class="nav">Dashboard</div><div class="nav">Claims</div><div class="nav">New Claim</div><div class="nav">Supplier SOPs</div><div class="nav on">Credit Notes</div><div class="nav">Email Drafts</div></div>
+        <div class="body">
+          <div class="row" style="margin-bottom:8px"><div class="grow"><div class="h1">Credit note reconciliation</div></div><div class="inp">All suppliers ▾</div><span class="btn pri">+ Record credit note</span></div>
+          <div class="g g4 rel" style="margin-bottom:8px"><span class="n">1</span><div class="box"><div class="sub">Submitted</div><b>₹2.9L</b></div><div class="box"><div class="sub">Credited</div><b>₹0.8L</b><div class="ln l"></div></div><div class="box"><div class="sub">Outstanding</div><b>₹2.1L</b></div><div class="box"><div class="sub">Unallocated</div><b>₹1,500</b></div></div>
+          <div class="row" style="margin-bottom:6px"><span class="pill dark">Claim balances</span><span class="pill">Credit notes</span><span class="grow"></span><span class="pill">No credit</span><span class="pill">Partial</span><span class="pill">Settled</span></div>
+          <div class="box scroll"><table class="t"><tr><th>Claim</th><th class="r">Claimed</th><th class="r">Credited</th><th class="r">Outstanding</th><th>Progress</th><th>Settlement</th></tr>
+            <tr><td>CLM-0005</td><td class="r">₹67,473</td><td class="r">₹50,605</td><td class="r"><b>₹16,868</b></td><td>▰▰▰▱</td><td><span class="pill dark">Partial</span></td></tr>
+            <tr><td>CLM-0011</td><td class="r">₹15,120</td><td class="r">—</td><td class="r"><b>₹15,120</b></td><td>▱▱▱▱</td><td><span class="pill">No credit</span></td></tr>
+            <tr><td>CLM-0001</td><td class="r">₹6,720</td><td class="r">₹6,720</td><td class="r">₹0</td><td>▰▰▰▰</td><td><span class="pill">Settled</span></td></tr></table></div>
+          <div class="box rel" style="margin-top:10px;border:2px solid var(--ink)"><span class="n">2</span><div class="ttl">◳ Dialog: Record supplier credit note</div>
+            <div class="g g4"><div class="inp">Supplier ▾</div><div class="inp">CN number</div><div class="inp">Date</div><div class="inp">Amount ₹</div></div>
+            <div class="row" style="margin:6px 0"><b style="font-size:11px" class="grow">Link to claims</b><span class="btn rel">✦ Auto-allocate oldest first<span class="n">3</span></span></div>
+            <table class="t"><tr><th>Claim</th><th class="r">Outstanding</th><th class="r">Apply ₹</th></tr><tr><td>CLM-0003</td><td class="r">₹4,368</td><td class="r"><span class="inp">4,368</span> Full</td></tr><tr><td>CLM-0021</td><td class="r">₹8,010</td><td class="r"><span class="inp">2,000</span> Full</td></tr></table>
+            <div class="g g3" style="margin-top:6px;text-align:center"><div class="box fill"><div class="sub">Credit note</div><b>₹6,368</b></div><div class="box fill"><div class="sub">Allocated</div><b>₹6,368</b></div><div class="box fill"><div class="sub">Unallocated</div><b>₹0</b></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <aside class="notes"><h3>Notes</h3><ol>
+      <li><b>Totals</b> cover submitted claims only. Unallocated credit (money received but not yet matched to a claim) is shown separately so it isn't missed.</li>
+      <li><b>One credit note can cover many claims</b>, matching how suppliers actually send them. Validation blocks allocating more than the credit note amount or more than a claim's outstanding balance.</li>
+      <li><b>Auto-allocate</b> fills the oldest invoices first. Staff can change any amount.</li>
+    </ol>
+    <div class="flow"><b>Demo flow 5:</b> saving updates the outstanding balance right away. If a claim is fully covered it becomes <b>Settled</b>. A partial credit moves it to <b>Claim Received</b>. Both changes are written to the claim's history.</div></aside>
+  </div>
+</section>
+
+<!-- ================= 6. EMAIL ================= -->
+<section class="screen" id="email">
+  <span class="day-tag">Module 6 · Day 2</span>
+  <h2>Email draft generator</h2>
+  <p class="goal">A ready-to-send claim email filled in from the claim and the supplier's SOP. Staff check it, attach the files and send it from their own mail app.</p>
+  <div class="wrap">
+    <div class="frame">
+      <div class="chrome"><i></i><i></i><i></i><span>/#/email?claim=CLM-0013</span></div>
+      <div class="app">
+        <div class="side"><div class="logo">✚ Kedia Claims</div><div class="nav">Dashboard</div><div class="nav">Claims</div><div class="nav">New Claim</div><div class="nav">Supplier SOPs</div><div class="nav">Credit Notes</div><div class="nav on">Email Drafts</div></div>
+        <div class="body">
+          <div class="h1" style="margin-bottom:8px">Email draft</div>
+          <div class="g" style="grid-template-columns:minmax(0,1fr) minmax(0,2fr)">
+            <div class="g" style="align-content:start">
+              <div class="box rel"><span class="n">1</span><div class="lbl">Claim</div><div class="inp">CLM-0013 · Medivance ▾</div><div class="lbl">Template</div><div class="row"><span class="pill dark">Submission</span><span class="pill">Follow-up</span></div></div>
+              <div class="box rel"><span class="n">2</span><div class="ttl">Attach manually</div><div class="check"><i class="x"></i>Invoice_MDV.pdf</div><div class="check"><i class="x"></i>Scheme_Circular.pdf</div><div class="check"><i></i><span>Debit note <span class="sub">— not uploaded</span></span></div></div>
+            </div>
+            <div class="box rel"><span class="n">3</span>
+              <div class="row"><span class="sub" style="width:50px">To</span><div class="inp grow">claims@medivance.example</div></div>
+              <div class="row" style="margin-top:4px"><span class="sub" style="width:50px">CC</span><div class="inp grow">accounts@medivance.example</div></div>
+              <div class="row" style="margin-top:4px"><span class="sub" style="width:50px">Subject</span><div class="inp grow">CLAIM – MDV/26/05230 – Price Difference – CLM-0013</div></div>
+              <div class="box fill mail" style="margin-top:6px">Dear Rohit,
+
+Please find our price difference claim against invoice MDV/26/05230 …
+
+  Product   : Montekast LC Tab 10s (MK25D16)
+  Qty       : 2,000 · Billed ₹64.00 · Agreed ₹59.50
+  Claim     : ₹10,080.00 (incl. GST 12%)
+
+Documents attached: …
+Regards, Priya Sharma – Kedia Pharmacy</div>
+              <div class="row rel" style="margin-top:6px"><span class="n">4</span><span class="btn">⧉ Copy</span><span class="btn">✉ Open in mail app</span><span class="grow"></span><span class="btn pri">I've sent it → Mark as sent</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <aside class="notes"><h3>Notes</h3><ol>
+      <li>Pick a claim, or open this page from a claim to have it pre-selected. There is a <b>follow-up template</b> for overdue claims.</li>
+      <li><b>Attachment checklist</b> comes from the supplier's required documents. Missing ones are flagged. Files are attached by hand because the app never sends email itself.</li>
+      <li>All fields can be edited. The subject follows the supplier's SOP rule (Medivance wants it to start with “CLAIM –”).</li>
+      <li><b>Copy</b> or <b>open in mail app</b> (mailto). Then “Mark as sent” records the submission, so the status stays accurate.</li>
+    </ol>
+    <div class="flow"><b>Demo flow 4:</b> generating the draft from the selected claim fills in the supplier, invoice, product and amount.</div></aside>
+  </div>
+</section>
+
+<!-- ================= 7. CLAIM DETAIL ================= -->
+<section class="screen" id="detail">
+  <span class="day-tag">Module 7 · Day 2</span>
+  <h2>Claim detail &amp; history</h2>
+  <p class="goal">Everything about one claim on one page, with a single “next step” button so staff never have to guess what comes next.</p>
+  <div class="wrap">
+    <div class="frame">
+      <div class="chrome"><i></i><i></i><i></i><span>/#/claims/CLM-2026-0013</span></div>
+      <div class="app">
+        <div class="side"><div class="logo">✚ Kedia Claims</div><div class="nav">Dashboard</div><div class="nav on">Claims</div><div class="nav">New Claim</div><div class="nav">Supplier SOPs</div><div class="nav">Credit Notes</div><div class="nav">Email Drafts</div></div>
+        <div class="body">
+          <div class="row" style="margin-bottom:8px"><div class="grow"><div class="sub">← All claims</div><div class="h1">CLM-2026-0013 <span class="pill">Not Claimed</span></div><div class="sub">Price Difference · Medivance · created 12 Oct</div></div><span class="btn">✎ Edit</span><span class="btn">✉ Email draft</span></div>
+          <div class="box rel"><span class="n">1</span>
+            <div class="stepper"><span class="dot on">1</span><span>Not Claimed</span><span class="bar"></span><span class="dot">2</span><span>Claim Sent</span><span class="bar"></span><span class="dot">3</span><span>Received</span><span class="bar"></span><span class="dot">4</span><span>Settled</span></div>
+            <div class="box fill rel" style="margin-top:8px"><span class="n">2</span><div class="row"><div class="grow"><b style="font-size:12px">Next: submit this claim to Medivance</b><div class="sub">Via Email · 1 required document missing</div></div><span class="btn">Follow SOP</span><span class="btn">Generate email</span><span class="btn pri">Mark as sent</span></div></div>
+            <div class="sub" style="text-align:right;margin-top:4px">Other status changes ▾</div>
+          </div>
+          <div class="g" style="grid-template-columns:minmax(0,2fr) minmax(0,1fr);margin-top:10px">
+            <div class="g">
+              <div class="box"><div class="ttl">Claim details</div><div class="g g3"><div><div class="sub">Invoice</div><div class="ln m"></div></div><div><div class="sub">Product</div><div class="ln l"></div></div><div><div class="sub">Batch</div><div class="ln s"></div></div><div><div class="sub">Qty</div><div class="ln s"></div></div><div><div class="sub">Rate</div><div class="ln s"></div></div><div><div class="sub">Agreed</div><div class="ln s"></div></div></div></div>
+              <div class="box"><div class="ttl">Documents <span class="pill">1 missing</span></div><div class="row"><span class="pill">Invoice.pdf</span><span class="pill">Scheme.pdf</span><span class="grow"></span><span class="btn">⇪ Upload</span></div></div>
+              <div class="box rel"><span class="n">3</span><div class="ttl">History</div>
+                <div class="check"><i class="x" style="border-radius:50%"></i><span><b>Status: Not Claimed → Claim Sent</b><br><span class="sub">via Email · Priya · 21 Oct 11:20</span></span></div>
+                <div class="check"><i style="border-radius:50%"></i><span><b>Documents uploaded</b><br><span class="sub">Amit · 12 Oct</span></span></div>
+                <div class="check"><i style="border-radius:50%"></i><span><b>Claim created</b> <span class="sub">₹10,080</span></span></div>
+                <div class="row"><div class="inp grow">Add a note…</div><span class="btn">Add note</span></div>
+              </div>
+            </div>
+            <div class="g" style="align-content:start">
+              <div class="box rel"><span class="n">4</span><div class="ttl">Settlement</div><div class="row"><span class="sub grow">Claim</span><b>₹10,080</b></div><div class="row"><span class="sub grow">Credited</span><span>₹0</span></div><div class="ln l"></div><div class="row"><span class="sub grow">Outstanding</span><b>₹10,080</b></div><div class="sub" style="margin-top:4px">Linked credit notes: none</div></div>
+              <div class="box"><div class="ttl">Calculation</div><div class="ln m"></div><div class="ln m"></div></div>
+              <div class="box"><div class="ttl">Submission</div><div class="sub">Not submitted · 11 days left</div></div>
+            </div>
+          </div>
+          <div class="box rel" style="margin-top:10px;border:2px solid var(--ink)"><span class="n">5</span><div class="ttl">◳ Dialog: Mark claim as sent</div><div class="g g3"><div class="inp">Date sent</div><div class="inp">Via: Email ▾</div><div class="inp">Reference</div></div><div class="row" style="margin-top:6px"><span class="grow"></span><span class="btn">Cancel</span><span class="btn pri">Mark as sent</span></div></div>
+        </div>
+      </div>
+    </div>
+    <aside class="notes"><h3>Notes</h3><ol>
+      <li><b>Status stepper</b>: Not Claimed → Claim Sent → Claim Received → Settled. A rejected claim shows a red banner with the reason and a “Reopen” button.</li>
+      <li><b>Next-action card</b> changes with each stage: <i>submit</i>, then <i>follow up</i> (with a reminder if overdue), then <i>record credit note</i>, then <i>done</i>.</li>
+      <li><b>History</b> is an audit trail of every status change, edit, upload, credit note and note, showing who did it and when.</li>
+      <li><b>Settlement</b> card shows the claim amount, how much is credited, a progress bar and the linked credit notes.</li>
+      <li>Status changes open a short dialog that records the date, method and reference.</li>
+    </ol>
+    <div class="flow"><b>Demo flow 2:</b> Not Claimed → <i>Mark as sent</i> → Claim Sent → <i>Mark as received</i> → Claim Received.</div></aside>
+  </div>
+</section>
+
+<!-- ================= FLOW MAP ================= -->
+<section class="screen" id="flows">
+  <h2>Flow map: the five demo workflows</h2>
+  <div class="map">
+    <p><b>1 · Create claim</b>: <code>New Claim</code> → save → <code>Claim Detail</code> → appears in <code>Claims table</code> as Not Claimed.</p>
+    <p><b>2 · Change status</b>: <code>Claim Detail</code> → Mark as sent (dialog) → Mark as received (dialog). Each step is logged in History.</p>
+    <p><b>3 · Follow SOP</b>: <code>Claim Detail</code> → Follow SOP → <code>Supplier SOP</code> checklist (claim pre-selected) → shortcuts.</p>
+    <p><b>4 · Email draft</b>: <code>Claim Detail</code> or <code>SOP</code> → <code>Email Draft</code> (pre-filled) → copy / mail app → Mark as sent.</p>
+    <p><b>5 · Credit note</b>: <code>Credit Notes</code> or <code>Claim Detail</code> → Record credit note (dialog) → allocate → outstanding updates → Settled automatically.</p>
+  </div>
+  <div class="legend"><span><b style="color:var(--note)">●</b> numbered note</span><span>▭ placeholder text</span><span>◳ dialog shown on top of the screen</span><span>Status labels match the brief exactly.</span></div>
+</section>
+</main>
+</body>
+</html>

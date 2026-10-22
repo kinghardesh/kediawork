@@ -114,7 +114,7 @@ export default function Dashboard() {
             <ul className="max-h-[420px] divide-y divide-slate-100 overflow-y-auto">
               {attention.map((a, i) => (
                 <li key={i}>
-                  <Link to={`/claims/${a.claim.id}`} className="flex items-start gap-3 px-5 py-3 hover:bg-slate-50">
+                  <Link to={a.title === 'Follow up with supplier' ? `/email?claim=${a.claim.id}&template=followup` : `/claims/${a.claim.id}`} className="flex items-start gap-3 px-5 py-3 hover:bg-slate-50">
                     <span className={cx('mt-1.5 h-2 w-2 shrink-0 rounded-full', a.severity === 'high' ? 'bg-red-500' : 'bg-amber-400')} />
                     <div className="min-w-0 flex-1">
                       <p className="text-sm font-medium text-slate-800">{a.title}</p>

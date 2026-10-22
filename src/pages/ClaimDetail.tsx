@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { ArrowLeft, BookOpen, Calculator, Check, CheckCircle2, ChevronDown, Clock, FileText, History, Mail, MessageSquarePlus, Paperclip, Pencil, Receipt, Send, XCircle } from 'lucide-react';
 import { useStore } from '../store/store';
@@ -21,6 +21,20 @@ export default function ClaimDetail() {
   const [cnOpen, setCnOpen] = useState(false);
   const [moreOpen, setMoreOpen] = useState(false);
   const [note, setNote] = useState('');
+  const menuRef = useRef<HTMLDivElement>(null);
+
+  // Close the status menu on outside click or Escape (works for touch and keyboard, not just mouse).
+  useEffect(() => {
+    if (!moreOpen) return;
+    const onDown = (e: PointerEvent) => !menuRef.current?.contains(e.target as Node) && setMoreOpen(false);
+    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && setMoreOpen(false);
+    document.addEventListener('pointerdown', onDown);
+    document.addEventListener('keydown', onKey);
+    return () => {
+      document.removeEventListener('pointerdown', onDown);
+      document.removeEventListener('keydown', onKey);
+    };
+  }, [moreOpen]);
 
   if (!claim) return <NotFound what="Claim" />;
   const s = store.supplier(claim.supplierId)!;
@@ -107,16 +121,16 @@ export default function ClaimDetail() {
               onStatus={setTarget}
               onCredit={() => setCnOpen(true)}
             />
-            <div className="relative mt-3 flex justify-end">
-              <button onClick={() => setMoreOpen((o) => !o)} className="inline-flex items-center gap-1 text-xs font-medium text-slate-500 hover:text-slate-800">
+            <div ref={menuRef} className="relative mt-3 flex justify-end">
+              <button onClick={() => setMoreOpen((o) => !o)} aria-expanded={moreOpen} aria-haspopup="menu" className="inline-flex items-center gap-1 text-xs font-medium text-slate-500 hover:text-slate-800">
                 Other status changes <ChevronDown className="h-3.5 w-3.5" />
               </button>
               {moreOpen && (
-                <div className="absolute right-0 top-6 z-10 w-56 rounded-lg border border-slate-200 bg-white py-1 shadow-lg" onMouseLeave={() => setMoreOpen(false)}>
+                <div className="absolute right-0 top-6 z-10 w-56 rounded-lg border border-slate-200 bg-white py-1 shadow-lg" role="menu">
                   {(['Not Claimed', 'Claim Sent', 'Claim Received', 'Settled', 'Rejected'] as ClaimStatus[])
                     .filter((x) => x !== claim.status)
                     .map((x) => (
-                      <button key={x} onClick={() => { setTarget(x); setMoreOpen(false); }} className="flex w-full items-center gap-2 px-3 py-2 text-left text-sm text-slate-700 hover:bg-slate-50">
+                      <button key={x} role="menuitem" onClick={() => { setTarget(x); setMoreOpen(false); }} className="flex w-full items-center gap-2 px-3 py-2 text-left text-sm text-slate-700 hover:bg-slate-50">
                         Set to <StatusBadge status={x} />
                       </button>
                     ))}

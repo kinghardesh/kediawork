@@ -1,4 +1,6 @@
 import { useEffect, useState } from 'react';
+import { AlertTriangle } from 'lucide-react';
+import { requiredDocsFor } from '../lib/calc';
 import { useStore } from '../store/store';
 import { useToast } from './Toast';
 import { Button, Field, Input, Modal, Select, StatusBadge, Textarea } from './ui';
@@ -36,6 +38,8 @@ export default function StatusModal({ claim, target, onClose }: { claim: Claim; 
   if (!target) return null;
   const copy = COPY[target];
   const needsReason = target === 'Rejected' || target === 'Not Claimed' || target === 'Settled';
+  // A warning, not a block: staff may have the paper copy even if it isn't uploaded here.
+  const missingDocs = target === 'Claim Sent' ? requiredDocsFor(sup, claim.type).filter((r) => !claim.documents.some((d) => d.category === r.category)).map((r) => r.category) : [];
 
   const save = () => {
     setStatus(claim.id, target, { date, method, reference: reference.trim() || undefined, reason: reason.trim() || undefined });
@@ -59,6 +63,14 @@ export default function StatusModal({ claim, target, onClose }: { claim: Claim; 
       }
     >
       <div className="space-y-4">
+        {missingDocs.length > 0 && (
+          <div className="flex gap-2 rounded-lg bg-amber-50 p-3 text-sm text-amber-800">
+            <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0" />
+            <span>
+              {sup?.code} requires {missingDocs.length === 1 ? 'a document' : 'documents'} not uploaded here: <b>{missingDocs.join(', ')}</b>. Make sure you attached {missingDocs.length === 1 ? 'it' : 'them'} to the submission.
+            </span>
+          </div>
+        )}
         {(target === 'Claim Sent' || target === 'Claim Received') && (
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <Field label={target === 'Claim Sent' ? 'Date sent' : 'Date acknowledged'} required>

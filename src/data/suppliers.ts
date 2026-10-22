@@ -9,6 +9,7 @@ export const SUPPLIERS: Supplier[] = [
     city: 'Kolkata',
     submissionMethod: 'Email',
     claimsEmail: 'claims@medivance.example',
+    subjectFormat: 'CLAIM – {invoice} – {type} – {claimId}',
     ccEmails: ['accounts@medivance.example'],
     contacts: [
       { name: 'Rohit Banerjee', role: 'Claims Executive', email: 'rohit.b@medivance.example', phone: '+91 98300 11223' },
@@ -77,6 +78,7 @@ export const SUPPLIERS: Supplier[] = [
     city: 'Mumbai',
     submissionMethod: 'Courier + Email',
     claimsEmail: 'expiry.claims@aarogyahc.example',
+    subjectFormat: 'Claim documents – Docket [docket no.] – Invoice {invoice} – {claimId}',
     ccEmails: ['east.distribution@aarogyahc.example'],
     courierAddress: 'Claims Cell, Aarogya Healthcare Ltd, Plot 14, MIDC Andheri East, Mumbai 400093',
     contacts: [

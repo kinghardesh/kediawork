@@ -1,4 +1,4 @@
-import { useEffect, useState, type FormEvent } from 'react';
+import { Suspense, useEffect, useState, type FormEvent } from 'react';
 import { NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { BookOpen, FilePlus2, FileText, LayoutDashboard, Mail, Menu, RotateCcw, Scale, Search, X } from 'lucide-react';
 import { useStore } from '../store/store';
@@ -14,6 +14,17 @@ const NAV = [
   { to: '/reconciliation', label: 'Credit Notes', icon: Scale },
   { to: '/email', label: 'Email Drafts', icon: Mail },
 ];
+
+/** Browser-tab title for a route, so several open tabs can be told apart. */
+function pageTitle(path: string) {
+  const [, section, id, sub] = path.split('/');
+  if (!section) return 'Dashboard';
+  if (section === 'claims') return id === 'new' ? 'New claim' : sub === 'edit' ? `Edit ${id}` : id ?? 'Claims';
+  if (section === 'suppliers') return id ? 'Supplier SOP' : 'Supplier SOPs';
+  if (section === 'reconciliation') return 'Credit notes';
+  if (section === 'email') return 'Email draft';
+  return 'Not found';
+}
 
 function Logo() {
   return (
@@ -38,7 +49,12 @@ export default function Layout() {
   const location = useLocation();
   const pending = claims.filter((c) => c.status === 'Not Claimed').length;
 
-  useEffect(() => setOpen(false), [location.pathname]);
+  useEffect(() => {
+    document.title = `${pageTitle(location.pathname)} · Kedia Claims`;
+    setOpen(false);
+    // Each page starts at the top, not at the previous page's scroll position.
+    window.scrollTo(0, 0);
+  }, [location.pathname]);
 
   const onSearch = (e: FormEvent) => {
     e.preventDefault();
@@ -116,7 +132,9 @@ export default function Layout() {
           </div>
         </header>
         <main className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:py-8">
-          <Outlet />
+          <Suspense fallback={<div className="py-24 text-center text-sm text-slate-400">Loading…</div>}>
+            <Outlet />
+          </Suspense>
         </main>
       </div>
     </div>

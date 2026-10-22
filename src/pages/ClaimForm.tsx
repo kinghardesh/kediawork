@@ -155,7 +155,7 @@ export default function ClaimForm() {
                   const blocked = supplier && !supplier.acceptedTypes.includes(t);
                   return (
                     <label key={t} className={cx('flex cursor-pointer items-start gap-3 rounded-lg border p-3 transition', f.type === t ? 'border-brand-500 bg-brand-50/50 ring-1 ring-brand-500' : 'border-slate-200 hover:border-slate-300', blocked && 'opacity-60')}>
-                      <input type="radio" name="type" className="mt-0.5 accent-brand-600" checked={f.type === t} onChange={() => set('type', t)} />
+                      <input type="radio" name="type" value={t} aria-label={t} className="mt-0.5 accent-brand-600" checked={f.type === t} onChange={() => set('type', t)} />
                       <span>
                         <span className="block text-sm font-medium text-slate-800">{t}</span>
                         <span className="block text-xs text-slate-500">{blocked ? `Not accepted by ${supplier?.code}` : TYPE_HELP[t]}</span>

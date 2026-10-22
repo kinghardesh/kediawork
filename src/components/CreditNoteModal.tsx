@@ -54,7 +54,8 @@ export default function CreditNoteModal({ open, onClose, presetSupplierId, prese
   const openClaims = useMemo(
     () =>
       claims
-        .filter((c) => c.supplierId === supplierId && c.status !== 'Rejected')
+        // Suppliers only credit claims they have received, so unsubmitted claims are not offered.
+        .filter((c) => c.supplierId === supplierId && c.status !== 'Rejected' && c.status !== 'Not Claimed')
         .map((c) => ({ c, bal: balanceFor(c, creditNotes) }))
         .filter((x) => x.bal.outstanding > 0)
         .sort((a, b) => a.c.invoiceDate.localeCompare(b.c.invoiceDate)),
@@ -154,7 +155,7 @@ export default function CreditNoteModal({ open, onClose, presetSupplierId, prese
         {!supplierId ? (
           <p className="rounded-lg bg-slate-50 p-4 text-sm text-slate-500">Select a supplier to see their claims with an outstanding balance.</p>
         ) : openClaims.length === 0 ? (
-          <p className="rounded-lg bg-slate-50 p-4 text-sm text-slate-500">This supplier has no claims with an outstanding balance. The full amount will be kept as unallocated credit.</p>
+          <p className="rounded-lg bg-slate-50 p-4 text-sm text-slate-500">This supplier has no submitted claims with an outstanding balance. The full amount will be kept as unallocated credit.</p>
         ) : (
           <div className="overflow-x-auto rounded-lg border border-slate-200">
             <table className="w-full min-w-[560px] text-sm">

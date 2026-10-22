@@ -60,6 +60,8 @@ export interface Supplier {
   /** % of purchase value reimbursed on expiry claims. */
   expiryReimbursementPct: number;
   tips: string[];
+  /** Subject line pattern from the SOP. Tokens: {invoice} {type} {claimId} {product}. */
+  subjectFormat?: string;
 }
 
 export interface ClaimDocument {

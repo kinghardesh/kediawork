@@ -129,7 +129,36 @@ export default function Claims() {
         {rows.length === 0 ? (
           <EmptyState icon={SearchX} title="No claims match these filters">Try a different search or clear the filters.</EmptyState>
         ) : (
-          <div className="overflow-x-auto">
+          <>
+          {/* Phones: one card per claim instead of a wide table */}
+          <ul className="divide-y divide-slate-100 md:hidden">
+            {rows.map(({ c, bal }) => (
+              <li key={c.id}>
+                <Link to={`/claims/${c.id}`} className="block px-4 py-3 active:bg-slate-50">
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="min-w-0">
+                      <p className="font-medium text-brand-700">{c.id}</p>
+                      <p className="truncate text-sm text-slate-800">{c.productName}</p>
+                      <p className="truncate text-xs text-slate-500">{supplier(c.supplierId)?.name} · {c.type}</p>
+                    </div>
+                    <div className="shrink-0 text-right">
+                      <p className="num font-semibold text-slate-900">{inr(c.amount)}</p>
+                      {c.status !== 'Not Claimed' && bal.outstanding > 0 && <p className="num text-xs text-amber-700">{inr(bal.outstanding)} due</p>}
+                    </div>
+                  </div>
+                  <div className="mt-2 flex items-center justify-between gap-2">
+                    <StatusBadge status={c.status} />
+                    <span className="text-xs text-slate-400">Inv {c.invoiceNo} · {fmtDate(c.invoiceDate)}</span>
+                  </div>
+                </Link>
+              </li>
+            ))}
+            <li className="flex justify-between bg-slate-50/60 px-4 py-3 text-sm font-medium text-slate-600">
+              <span>{rows.length} claim{rows.length === 1 ? '' : 's'}</span>
+              <span className="num">{inr(totals.amount)}</span>
+            </li>
+          </ul>
+          <div className="hidden overflow-x-auto md:block">
             <table className="w-full min-w-[1000px] text-left text-sm">
               <thead className="border-b border-slate-100 bg-slate-50/60">
                 <tr>
@@ -159,6 +188,7 @@ export default function Claims() {
               </tfoot>
             </table>
           </div>
+          </>
         )}
       </Card>
     </>

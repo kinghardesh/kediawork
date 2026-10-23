@@ -30,6 +30,20 @@ The build is plain static files: it uses a relative base path and hash-based URL
 
 **Reset the demo:** click **Reset demo data** at the bottom of the sidebar to restore the original sample data.
 
+### Sample data worth opening
+
+The sample data includes every settlement state, so you can see them without creating anything:
+
+| State | Example claims | What to look at |
+|---|---|---|
+| **Fully settled** | CLM-2026-0001, CLM-2026-0002 | Both were paid by **one** credit note (MDV-CN-2026-0412). Outstanding is ₹0 and the status is *Settled*. |
+| **Partially credited** | CLM-2026-0003 (50%), CLM-2026-0009 (60%), CLM-2026-0005 (75%) | The amber *Partially credited* label in the Claims table, plus the progress bar, credit note and remaining balance on the claim page. |
+| **Unallocated credit** | AHL-CRN-55102 | ₹1,500 on this credit note isn't matched to any claim. Use **Credit Notes → Credit notes → Allocate** to match it. |
+| **Rejected** | CLM-2026-0019 | Submitted after the supplier's claim window, with the rejection reason recorded. |
+| **Needs follow-up** | CLM-2026-0006, CLM-2026-0011 | Sent but not acknowledged within the supplier's usual time. These appear on the dashboard alerts. |
+
+On **Credit Notes → Claim balances**, the *Partially credited* and *Fully settled* filters list each group.
+
 ---
 
 ## The five demo workflows

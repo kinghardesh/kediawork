@@ -40,6 +40,7 @@ export default function Dashboard() {
       settledValue: sum(by('Settled')),
       outstanding,
       awaiting: submitted.filter((c) => c.status !== 'Settled').length,
+      partial: submitted.filter((c) => balanceFor(c, creditNotes).state === 'partial').length,
       credited,
       counts: Object.fromEntries(PIPELINE.map((s) => [s, by(s).length])) as Record<ClaimStatus, number>,
       values: Object.fromEntries(PIPELINE.map((s) => [s, sum(by(s))])) as Record<ClaimStatus, number>,
@@ -83,7 +84,7 @@ export default function Dashboard() {
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-5">
         <Kpi label="Total claims" value={String(stats.total)} sub={`${inr(stats.totalValue)} claimed (excl. rejected)`} icon={FileText} tone="bg-slate-100 text-slate-600" to="/claims" />
         <Kpi label="Pending submission" value={String(stats.pending.length)} sub={`${inr(stats.pendingValue)} not yet claimed`} icon={Clock} tone="bg-slate-100 text-slate-600" to="/claims?status=Not%20Claimed" />
-        <Kpi label="Awaiting settlement" value={String(stats.awaiting)} sub="Sent or acknowledged" icon={Send} tone="bg-blue-50 text-blue-600" to="/claims?status=Awaiting" />
+        <Kpi label="Awaiting settlement" value={String(stats.awaiting)} sub={stats.partial ? `Sent or acknowledged · ${stats.partial} partially credited` : 'Sent or acknowledged'} icon={Send} tone="bg-blue-50 text-blue-600" to="/claims?status=Awaiting" />
         <Kpi label="Settled" value={String(stats.settled.length)} sub={`${inr(stats.settledValue)} fully credited`} icon={CheckCircle2} tone="bg-emerald-50 text-emerald-600" to="/claims?status=Settled" />
         <Kpi label="Outstanding balance" value={inr(stats.outstanding)} sub="Owed by suppliers on submitted claims" icon={Wallet} tone="bg-amber-50 text-amber-600" to="/reconciliation" />
       </div>

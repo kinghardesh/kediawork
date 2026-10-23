@@ -144,6 +144,7 @@ export default function Claims() {
                     <div className="shrink-0 text-right">
                       <p className="num font-semibold text-slate-900">{inr(c.amount)}</p>
                       {c.status !== 'Not Claimed' && bal.outstanding > 0 && <p className="num text-xs text-amber-700">{inr(bal.outstanding)} due</p>}
+                      {bal.state === 'partial' && c.status !== 'Rejected' && <p className="text-xs font-medium text-amber-700">Partially credited</p>}
                     </div>
                   </div>
                   <div className="mt-2 flex items-center justify-between gap-2">
@@ -215,7 +216,10 @@ function Row({ c, outstanding, partial, supplierName, onOpen }: { c: Claim; outs
       <td className="num whitespace-nowrap px-4 py-3 text-right font-medium text-slate-900">{inr(c.amount)}</td>
       <td className="num whitespace-nowrap px-4 py-3 text-right">
         {outstanding === null ? <span className="text-slate-300">—</span> : outstanding === 0 ? <span className="text-emerald-600">₹0</span> : (
-          <span className={partial ? 'font-medium text-amber-700' : 'text-slate-700'} title={partial ? 'Partially credited' : undefined}>{inr(outstanding)}</span>
+          <>
+            <span className={partial ? 'font-medium text-amber-700' : 'text-slate-700'}>{inr(outstanding)}</span>
+            {partial && <span className="block text-xs font-medium text-amber-700">Partially credited</span>}
+          </>
         )}
       </td>
       <td className="px-4 py-3"><StatusBadge status={c.status} /></td>

@@ -6,7 +6,7 @@ The prototype is built for **non-technical staff**. Every screen shows where a c
 
 > **Prototype only.** All suppliers, people, products, emails and phone numbers are fictional. There is no backend, login or real email sending. Changes are saved in your browser.
 
-- **Live demo:** https://kinghardesh.github.io/kediawork/
+- **Live demo:**https://kediawork.vercel.app/
 - **Wireframes:** https://kinghardesh.github.io/kediawork/wireframes.html (source: [`public/wireframes.html`](public/wireframes.html))
 
 ---

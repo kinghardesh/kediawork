@@ -148,7 +148,7 @@ export default function Dashboard() {
                     labelFormatter={(_, p) => (p?.[0]?.payload as { full?: string })?.full ?? ''}
                     contentStyle={{ borderRadius: 8, border: '1px solid #e2e8f0', fontSize: 12 }}
                   />
-                  <Bar dataKey="outstanding" fill="#2a9888" radius={[0, 4, 4, 0]} barSize={18} />
+                  <Bar dataKey="outstanding" fill="#2a9888" radius={[0, 4, 4, 0]} barSize={18} isAnimationActive={false} />
                 </BarChart>
               </ResponsiveContainer>
             </div>

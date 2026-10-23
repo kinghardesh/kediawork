@@ -6,8 +6,8 @@ The prototype is built for **non-technical staff**. Every screen shows where a c
 
 > **Prototype only.** All suppliers, people, products, emails and phone numbers are fictional. There is no backend, login or real email sending. Changes are saved in your browser.
 
-- **Wireframes:** [`public/wireframes.html`](public/wireframes.html) (open `/wireframes.html` while the app is running)
-- **Live demo:** *added on Day 5*
+- **Live demo:** https://kinghardesh.github.io/kediawork/
+- **Wireframes:** https://kinghardesh.github.io/kediawork/wireframes.html (source: [`public/wireframes.html`](public/wireframes.html))
 
 ---
 
@@ -27,6 +27,8 @@ npm run dev        # http://localhost:5173
 | `npm run preview` | Serve the production build locally |
 
 The build is plain static files: it uses a relative base path and hash-based URLs, so `dist/` works on any static host (GitHub Pages, Netlify, Vercel) with no server setup.
+
+**Deployment:** [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml) builds the app and publishes it to GitHub Pages on every push to `main`. One-time setup: **Settings → Pages → Source: GitHub Actions**.
 
 **Reset the demo:** click **Reset demo data** at the bottom of the sidebar to restore the original sample data.
 
@@ -82,6 +84,17 @@ These are the interactions the prototype is built around. Each one can be done e
    - a claim that is fully covered becomes **Settled** automatically;
    - a partial credit shows as *Partially credited*, with the remaining balance;
    - any amount not matched to a claim stays on the credit note as *unallocated* and can be matched later with **Allocate**.
+
+---
+
+## Screenshots
+
+| | |
+|---|---|
+| **Dashboard**: KPIs, claim pipeline, alerts, outstanding balance by supplier<br>![Dashboard](docs/screenshots/01-dashboard.png) | **Claims**: search, filters, status tabs, outstanding balances<br>![Claims table](docs/screenshots/02-claims.png) |
+| **Claim detail**: a partially credited claim, with status tracker, next step and settlement<br>![Claim detail](docs/screenshots/03-claim-detail-partial.png) | **New claim**: live calculation and the supplier's SOP hints<br>![New claim](docs/screenshots/04-new-claim.png) |
+| **Supplier SOP**: step-by-step checklist linked to a claim<br>![Supplier SOP](docs/screenshots/05-supplier-sop.png) | **Credit notes**: claimed vs credited vs outstanding<br>![Credit notes](docs/screenshots/06-credit-notes.png) |
+| **Email draft**: pre-filled from the claim and SOP, with attachment checklist<br>![Email draft](docs/screenshots/07-email-draft.png) | |
 
 ---
 
@@ -200,4 +213,4 @@ docs/                   assignment notes
 | 2 | Wireframes for the remaining modules; clickable interface started | Done |
 | 3 | All screens with realistic fictional data; main interactions connected | Done |
 | 4 | UI polish; five demo workflows tested | Done |
-| 5 | Deployment, screenshots / walkthrough video, final submission | Pending |
+| 5 | Final checks, screenshots, GitHub Pages deployment, handover | Done |
